@@ -4,12 +4,14 @@
 [![Documentation](https://img.shields.io/docsrs/embassy-gy-bmi160/latest.svg)](https://docs.rs/embassy-gy-bmi160)
 [![License](https://img.shields.io/crates/l/embassy-gy-bmi160.svg)](LICENSE)
 
-Driver async no_std pour l'unité de mesure inertielle (IMU) 6 axes BMI160.
+**Driver async no_std pour l'unité de mesure inertielle (IMU) 6 axes BMI160.**
 
-Conçu spécifiquement pour l'écosystème Embassy (embassy-time, embassy-sync) . Ce driver se concentre sur l'extraction  des données brutes via I2C.
+Conçu spécifiquement pour l'écosystème Embassy (embassy-time, embassy-sync) . Ce driver se concentre sur l'extraction  des données brutes via I2C, ce ne'est pas une crate liée aà embassy attention !! , j'utilise embassy pour la roboustesse et philosophie de travail .
 
-# Update La version 0.2.0 , le vip : #![forbid(unsafe_code)]
-integre un exemple OLEd sqrt gyro-acce, clé en main et du safety avec #![forbid(unsafe_code)]
+# Update La version 0.2.0 , le vip : 
+**#![forbid(unsafe_code)]**
+
+La version 0.2.0 integre un exemple OLEd sqrt gyro-acce, clé en main et du safety avec #![forbid(unsafe_code)]
 
 **Pour voir l'historique complet des changements, consultez le [CHANGELOG](CHANGELOG.md)**
 
@@ -22,7 +24,7 @@ CS (Chip Select) : Doit être relié au 3.3V pour activer le mode I2C.
 
 SA0 : Définit l'adresse. Reliez au GND pour l'adresse 0x68 (par défaut dans ce driver).
 
-Fonctionnalités
+**Fonctionnalités**
 Async Natif : Utilise embedded-hal-async pour des lectures I2C non-bloquantes.
 
 Zéro Logique Superflue : Retourne uniquement les données brutes (i16) pour une latence minimale.
@@ -36,13 +38,13 @@ Zéro Allocation : Conçu pour le bare-metal pur.
 ----
 
 # Installation
-
+````
 [dependencies]
-embassy-gy-bmi160 = "0.2.0"
-embassy-time      = { version = "0.4.0" }
-embassy-sync      = { version = "0.6.0" }
+embassy-gy-bmi160 = "0.2.2"
+embassy-time      = version = ">=0.3, <0.6" 
+embassy-sync      = version = ">=0.4, <0.9"
 embedded-hal-async = { version = "1.0" }
-
+````
 
 ----
 
@@ -74,8 +76,11 @@ if let Ok(gyro) = bmi160.read_gyro().await {
 
 ----
 
-# Exemple Complet : Intégration JC-OS (LCD + IMU) plus embedded-f32-sqrt pour laffichage 
-Voici comment orchestrer la lecture du capteur et l'affichage sur un LCD en utilisant les signaux globaux, vous pouvez rétrouver lensemble des crates dans mon profil , des crates plug and play :) .
+# Exemple Complet : Intégration JC-OS (LCD + IMU) :
+
+J'utilise embedded-f32-sqrt pour les calculs sqrt.
+Voici comment orchestrer la lecture du capteur et l'affichage sur un
+LCD en utilisant les signaux globaux, vous pouvez rétrouver lensemble des crates dans mon profil , des crates plug and play :) .
 
 
 ````rust
@@ -214,18 +219,18 @@ async fn system_task(
 ---
 
 # Pourquoi cette architecture ?
-L'utilisation des signaux ACCEL_SIGNAL et GYRO_SIGNAL garantit la stabilité du Kernel :
+L'utilisation des signaux ACCEL_SIGNAL et GYRO_SIGNAL garantit la stabilité :
 
 Priorité Critique : La tâche IMU peut tourner à haute fréquence sans être ralentie par la lenteur de l'affichage LCD.
 
-Consommation Prédictive : Les tâches consommatrices attendent (wait()) passivement, libérant les cycles CPU du RP2350.
+Consommation Prédictive : Les tâches consommatrices attendent (wait()) passivement, libérant les cycles CPU du RP2350 par exemple .
 
 Sécurité : Aucun partage de mémoire complexe, tout passe par des primitives de synchronisation no_std.
 
 ---
 
 # Schéma de Câblage (Pico 2)
-Respectez ce montage pour garantir l'intégrité du bus I2C :
+**Respectez ce montage pour garantir l'intégrité du bus I2C :**
 
 VCC : 3.3V
 
