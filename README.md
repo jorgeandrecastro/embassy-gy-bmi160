@@ -1,10 +1,19 @@
 # embassy-gy-bmi160 (v0.2.0)  
+
+[![Crates.io](https://img.shields.io/crates/v/embassy-gy-bmi160.svg)](https://crates.io/crates/embassy-gy-bmi160)
+[![Documentation](https://img.shields.io/docsrs/embassy-gy-bmi160/latest.svg)](https://docs.rs/embassy-gy-bmi160)
+[![License](https://img.shields.io/crates/l/embassy-gy-bmi160.svg)](LICENSE)
+
 Driver async no_std pour l'unité de mesure inertielle (IMU) 6 axes BMI160.
 
 Conçu spécifiquement pour l'écosystème Embassy (embassy-time, embassy-sync) . Ce driver se concentre sur l'extraction  des données brutes via I2C.
 
 # Update La version 0.2.0 , le vip : #![forbid(unsafe_code)]
 integre un exemple OLEd sqrt gyro-acce, clé en main et du safety avec #![forbid(unsafe_code)]
+
+**Pour voir l'historique complet des changements, consultez le [CHANGELOG](CHANGELOG.md)**
+
+----
 
 # 🔴 ATTENTION MATÉRIEL
 Le module GY-BMI160 (HW-661) nécessite une attention particulière pour fonctionner sur un bus I2C partagé :
@@ -24,15 +33,50 @@ Découplage par Signaux : Module signals intégré pour une communication inter-
 
 Zéro Allocation : Conçu pour le bare-metal pur.
 
+----
+
 # Installation
-Ini, TOML
+
 [dependencies]
 embassy-gy-bmi160 = "0.2.0"
 embassy-time      = { version = "0.4.0" }
 embassy-sync      = { version = "0.6.0" }
 embedded-hal-async = { version = "1.0" }
+
+
+----
+
+# Exemples
+
+## Exemple Simple : Lecture de Base , exemple d'utilisation des fonctions de la crate .
+
+Voici un exemple minimal pour initialiser et lire le capteur :
+
+```rust
+use embassy_gy_bmi160::Bmi160;
+
+// Créer une instance BMI160
+let mut bmi160 = Bmi160::new(i2c_device, 0x68);
+
+// Initialiser le capteur
+bmi160.init().await?;
+
+// Lire l'accéléromètre
+if let Ok(accel) = bmi160.read_accel().await {
+    // accel.x, accel.y, accel.z contiennent les données brutes
+}
+
+// Lire le gyroscope
+if let Ok(gyro) = bmi160.read_gyro().await {
+    // gyro.x, gyro.y, gyro.z contiennent les données brutes
+}
+```
+
+----
+
 # Exemple Complet : Intégration JC-OS (LCD + IMU) plus embedded-f32-sqrt pour laffichage 
 Voici comment orchestrer la lecture du capteur et l'affichage sur un LCD en utilisant les signaux globaux, vous pouvez rétrouver lensemble des crates dans mon profil , des crates plug and play :) .
+
 
 ````rust
 
@@ -166,6 +210,9 @@ async fn system_task(
     }
 }
 ````
+
+---
+
 # Pourquoi cette architecture ?
 L'utilisation des signaux ACCEL_SIGNAL et GYRO_SIGNAL garantit la stabilité du Kernel :
 
@@ -174,6 +221,8 @@ Priorité Critique : La tâche IMU peut tourner à haute fréquence sans être r
 Consommation Prédictive : Les tâches consommatrices attendent (wait()) passivement, libérant les cycles CPU du RP2350.
 
 Sécurité : Aucun partage de mémoire complexe, tout passe par des primitives de synchronisation no_std.
+
+---
 
 # Schéma de Câblage (Pico 2)
 Respectez ce montage pour garantir l'intégrité du bus I2C :
@@ -189,6 +238,8 @@ CS : IMPÉRATIF au 3.3V (Active le mode I2C)
 SA0 : Au GND (Fixe l'adresse à 0x68)
 
 Pour le peuple , les makers , un grand merci sans vous tout ca serait pas possible , Merci Rust , Merci Raspberry pi.
+
+---
 
 # Licence
 Ce projet est distribué sous licence GPL-2.0-or-later.

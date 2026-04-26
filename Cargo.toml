@@ -1,7 +1,7 @@
 [package]
 edition = "2024"
 name = "embassy-gy-bmi160"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["Jorge Andre Castro <georgeandrec@gmail.com>"]
 build = false
 autolib = false
@@ -32,10 +32,10 @@ name = "embassy_gy_bmi160"
 path = "src/lib.rs"
 
 [dependencies.embassy-sync]
-version = "0.6.0"
+version = ">=0.4, <0.9"
 
 [dependencies.embassy-time]
-version = "0.4.0"
+version = ">=0.3, <0.6" 
 
 [dependencies.embedded-hal-async]
 version = "1.0"
