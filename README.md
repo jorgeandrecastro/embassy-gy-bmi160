@@ -1,4 +1,4 @@
-# embassy-gy-bmi160 (v0.2.0)  
+# embassy-gy-bmi160 (v0.3.0)  
 
 [![Crates.io](https://img.shields.io/crates/v/embassy-gy-bmi160.svg)](https://crates.io/crates/embassy-gy-bmi160)
 [![Documentation](https://img.shields.io/docsrs/embassy-gy-bmi160/latest.svg)](https://docs.rs/embassy-gy-bmi160)
@@ -8,8 +8,24 @@
 
 Conçu spécifiquement pour l'écosystème Embassy (embassy-time, embassy-sync) . Ce driver se concentre sur l'extraction  des données brutes via I2C, ce ne'est pas une crate liée aà embassy attention !! , j'utilise embassy pour la roboustesse et philosophie de travail .
 
-# Update La version 0.2.0 , le vip : 
-**#![forbid(unsafe_code)]**
+# Update version 0.3.0
+
+- Remplacement des plages de compatibilité par des versions explicites afin d’assurer une meilleure stabilité et reproductibilité des builds.
+
+### Dépendances
+
+```toml
+[dependencies.embassy-sync]
+version = "0.8"
+
+[dependencies.embassy-time]
+version = "0.5" 
+
+[dependencies.embedded-hal-async]
+version = "1.0"
+```
+
+# Update version 0.2.0 : 
 
 La version 0.2.0 integre un exemple OLEd sqrt gyro-acce, clé en main et du safety avec #![forbid(unsafe_code)]
 
@@ -40,9 +56,9 @@ Zéro Allocation : Conçu pour le bare-metal pur.
 # Installation
 ````
 [dependencies]
-embassy-gy-bmi160 = "0.2.2"
-embassy-time      = version = ">=0.3, <0.6" 
-embassy-sync      = version = ">=0.4, <0.9"
+embassy-gy-bmi160 = "0.3.0"
+embassy-time = version = "0.5" 
+embassy-sync = version = "0.8"
 embedded-hal-async = { version = "1.0" }
 ````
 
@@ -241,8 +257,6 @@ SCL / SDA : Pins GP5 / GP4 (avec pull-ups si nécessaire)
 CS : IMPÉRATIF au 3.3V (Active le mode I2C)
 
 SA0 : Au GND (Fixe l'adresse à 0x68)
-
-Pour le peuple , les makers , un grand merci sans vous tout ca serait pas possible , Merci Rust , Merci Raspberry pi.
 
 ---
 

@@ -4,6 +4,24 @@ Tous les changements notables de ce projet sont documentés dans ce fichier.
 
 Le format suit [Keep a Changelog](https://keepachangelog.com/), et le versioning suit [Semantic Versioning](https://semver.org/).
 
+
+# [0.3.0] - 2026-05-02
+
+- Remplacement des plages de compatibilité par des versions explicites afin d’assurer une meilleure stabilité et reproductibilité des builds.
+
+### Dépendances
+
+```toml
+[dependencies.embassy-sync]
+version = "0.8"
+
+[dependencies.embassy-time]
+version = "0.5" 
+
+[dependencies.embedded-hal-async]
+version = "1.0"
+```
+
 ## [0.2.1] - 2026-04-26
 
 ### Changed

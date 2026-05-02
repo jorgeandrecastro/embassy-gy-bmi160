@@ -7,7 +7,7 @@
 //! # embassy-gy-bmi160
 //!
 //! Driver asynchrone `no_std` pour l'IMU Bosch BMI160 via I2C.
-//! Développé pour le Kernel JC-OS, optimisé pour l'exécuteur `embassy`.
+//! optimisé pour l'exécuteur `embassy`.
 //! 
 //! Ce pilote fournit un accès direct aux registres de données brutes 
 //! de l'accéléromètre et du gyroscope sans surcoût de calcul.
